@@ -4,6 +4,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import NavBar from "@/components/navbar/NavBar";
 import Container from "@/components/global/Container";
+import { Toaster } from "sonner";
+import {ClerkProvider} from "@clerk/nextjs"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,19 +28,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <ThemeProvider  attribute={'class'} defaultTheme="system" enableSystem disableTransitionOnChange>
+
+    <ClerkProvider>
+        <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider  attribute={'class'} defaultTheme="system" enableSystem disableTransitionOnChange>
+        <Toaster />
+        
           <NavBar />
           <Container  className="py-20 ">
             {children}
           </Container>
           
-        </ThemeProvider>
+        
         
       </body>
     </html>
+    </ClerkProvider>
+  </ThemeProvider>
   );
 }
