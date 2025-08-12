@@ -11,12 +11,12 @@ const HeroCarousel = () => {
 
   return (
     <div className='hidden lg:block '>
-      <Carousel >
+      <Carousel  >
         <CarouselContent>
           {carouselImages.map((image,index)=>(
             <CarouselItem key={index} >
-              <Card >
-                <CardContent className='p-2' >
+              <Card className='p-0' >
+                <CardContent className='p-0' >
                   <Image  src={image} alt='hero ' className='w-full h-[24rem] rounded-md object-cover '/>
                 </CardContent>
               </Card>
