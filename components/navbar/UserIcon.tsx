@@ -10,7 +10,7 @@ const UserIcon = async() => {
     
   }
   return (
-    <LuUser  className='w-6 h-6 rounded-full text-white bg-primary'/>
+    <LuUser  className='w-6 h-6 rounded-full text-secondary bg-primary'/>
   )
 }
 

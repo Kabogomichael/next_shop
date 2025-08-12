@@ -28,25 +28,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ThemeProvider  attribute={'class'} defaultTheme="system" enableSystem disableTransitionOnChange>
+    
 
     <ClerkProvider>
         <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+         <ThemeProvider  attribute={'class'} defaultTheme="system" enableSystem disableTransitionOnChange>
         <Toaster />
-        
           <NavBar />
           <Container  className="py-20 ">
             {children}
           </Container>
-          
-        
-        
+        </ThemeProvider>
       </body>
     </html>
     </ClerkProvider>
-  </ThemeProvider>
+  
   );
 }

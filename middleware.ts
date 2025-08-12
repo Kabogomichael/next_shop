@@ -1,11 +1,26 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
-const isPublicRoute = createRouteMatcher(['/','/products(.*)','/about'])
-export default clerkMiddleware( async(auth,req)=>{
-    if (!isPublicRoute(req)) {
-      return ;
+import { NextResponse } from 'next/server';
+
+const isPublicRoute = createRouteMatcher(['/','/products(.*)','/about']);
+const isAdminRoute = createRouteMatcher(['/admin(.*)']);
+export default clerkMiddleware(async (auth,req)=>{
+   const isAdminUser = (await auth()).userId === process.env.ADMIN_USER_ID;
+    
+   if (isAdminRoute(req) && !isAdminUser) {
+    return NextResponse.redirect(new URL('/',req.url))
+   }
+      
+    if (isPublicRoute(req)) {
+      return NextResponse.next();
     }
-    const session = await auth()
-    return session.redirectToSignIn({returnBackUrl:req.url})
+  const {userId} = await auth();
+
+  if (!userId) {
+     return auth.protect()
+  }
+//   redirectToSignIn({returnBackUrl:req.url})
+    
+    return NextResponse.next()
 });
 
 export const config = {
@@ -13,7 +28,8 @@ export const config = {
     // Skip Next.js internals and all static files, unless found in search params
     '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
     // // Always run for API routes
-    // '/(api|trpc)(.*)',
+    '/(api|trpc)(.*)',
+
     '/((?!_next|.*\\..*|api).*)'
 
   ],
